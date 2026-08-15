@@ -1,7 +1,5 @@
 # =========================================================
-# PHASE 10 — Interactive Demo App
 # Loan Approval System with Explainable Credit Risk
-# Run with: streamlit run app.py   (from inside the app/ folder)
 # =========================================================
 import os
 import streamlit as st
@@ -15,9 +13,7 @@ from datetime import datetime
 
 st.set_page_config(page_title="Loan Risk Decision System", layout="wide")
 
-# ---------------------------------------------------------
-# 1. Load all artifacts ONCE (cached so it doesn't reload on every interaction)
-# ---------------------------------------------------------
+
 MODELS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "models")
 
 @st.cache_resource
@@ -42,11 +38,6 @@ NUMERIC_FEATURES = [
 ]
 CATEGORICAL_FEATURES = ["utilization_bucket", "age_bucket"]
 
-# ---------------------------------------------------------
-# 2. Same engineer_features / reason-code logic from Phase 09
-#    (kept identical on purpose — one source of truth, copy-pasted
-#    here since Streamlit apps run standalone, not importing the notebook)
-# ---------------------------------------------------------
 def engineer_features(raw_input: dict) -> pd.DataFrame:
     monthly_income = raw_input.get("MonthlyIncome")
     income_missing = int(monthly_income is None or pd.isna(monthly_income))
@@ -137,9 +128,7 @@ def predict_applicant(raw_input: dict) -> dict:
         "shap_row": shap_row, "X_processed": X_processed,
     }
 
-# ---------------------------------------------------------
-# 3. Sidebar: applicant input form
-# ---------------------------------------------------------
+
 st.sidebar.header("📋 Applicant Information")
 
 utilization = st.sidebar.slider("Credit Utilization Ratio", 0.0, 2.0, 0.45, 0.01,
@@ -170,14 +159,10 @@ raw_input = {
     "NumberOfTimes90DaysLate": late_90,
 }
 
-# ---------------------------------------------------------
-# 4. Run prediction (recomputes live as sliders move — this IS the what-if feature)
-# ---------------------------------------------------------
+
 result = predict_applicant(raw_input)
 
-# ---------------------------------------------------------
-# 5. Main layout
-# ---------------------------------------------------------
+
 st.title("🏦 Loan Approval System — Explainable Credit Risk")
 st.caption("Adjust the sliders on the left and watch the decision update live.")
 
@@ -235,5 +220,4 @@ with col2:
 st.markdown("---")
 st.caption(
     "⚠ This is a demo built on a public dataset for educational purposes. "
-    "It is not a real credit decisioning system and should not be used for actual lending decisions."
 )
