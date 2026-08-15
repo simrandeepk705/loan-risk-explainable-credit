@@ -1,0 +1,17 @@
+# Virtual environment - never commit this, it's huge and machine-specific
+.venv/
+
+# Raw data - often too large for GitHub, and sometimes licensed for
+# redistribution restrictions depending on source
+data/raw/*.csv
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
+Thumbs.db
